@@ -33,13 +33,13 @@ Write-Host 'Ensuring all required Powershell modules are installed and installin
 foreach($module in $modules){
     if(!(Get-Module $module)){
         try{
-            Import-Module $module
+            Import-Module $module -ErrorAction Stop
             Write-Host "Module named $module found locally and imported" -ForegroundColor White
         }
         catch{
             Write-Host "Module named $module not found - Installing..." -ForegroundColor White
             try{
-                Install-Module -Name $module -Scope CurrentUser -Force
+                Install-Module -Name $module -Scope CurrentUser -Force -ErrorAction Stop
                 Write-Host "Module named $module installed successfully" -ForegroundColor Green
             }
             catch{
@@ -59,7 +59,7 @@ foreach($module in $modules){
 # Connect to Microsoft Graph
 Write-Host 'Attempting to connect to MS Graph interactively' -ForegroundColor White
 try{
-    Connect-MgGraph -Scopes "Application.Read.All" -NoWelcome
+    Connect-MgGraph -Scopes "Application.Read.All" -NoWelcome -ErrorAction Stop
     Write-Host 'Connection to MS Graph succesful' -ForegroundColor Green
 }
 catch{
